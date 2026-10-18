@@ -1,5 +1,5 @@
 // 思い出すごろく：40マス設定データ
-// 画像・動画のURLは仮パスです。実ファイルを public/ 配下に配置してください。
+// 画像・動画のURLは仮パスです。実ファイルを / 配下に配置してください。
 
 export type CellAction =
   | { type: "forward"; value: number }
@@ -40,7 +40,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "normal",
     mediaType: "image",
     action: undefined,
-    imageUrl: "public/memories/01-raw-meat-shop.png",
+    imageUrl: "/memories/01-raw-meat-shop.png",
     mediaHint: "写真さがせ"
   },
   {
@@ -50,7 +50,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "normal",
     mediaType: "image",
     action: undefined,
-    imageUrl: "public/memories/02-sayacchi-armpit-reference.png",
+    imageUrl: "/memories/02-sayacchi-armpit-reference.png",
     mediaHint: "画像生成"
   },
   {
@@ -60,7 +60,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "normal",
     mediaType: "image",
     action: undefined,
-    imageUrl: "public/memories/03-bicycle-police.png",
+    imageUrl: "/memories/03-bicycle-police.png",
     mediaHint: "未指定"
   },
   {
@@ -70,7 +70,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "normal",
     mediaType: "image",
     action: undefined,
-    imageUrl: "public/memories/04-soba-oyakodon.png",
+    imageUrl: "/memories/04-soba-oyakodon.png",
     mediaHint: "そばと親子丼"
   },
   {
@@ -80,7 +80,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "plus",
     mediaType: "image",
     action: { type: "forward", value: 2 },
-    imageUrl: "public/memories/05-hokkaido-walking-wolf.png",
+    imageUrl: "/memories/05-hokkaido-walking-wolf.png",
     mediaHint: "動物園の狼"
   },
   {
@@ -90,7 +90,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "normal",
     mediaType: "image",
     action: undefined,
-    imageUrl: "public/memories/06-full-gear-cheki.png",
+    imageUrl: "/memories/06-full-gear-cheki.png",
     mediaHint: "あのチェキ"
   },
   {
@@ -100,7 +100,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "normal",
     mediaType: "image",
     action: undefined,
-    imageUrl: "public/memories/07-shibito-expo.png",
+    imageUrl: "/memories/07-shibito-expo.png",
     mediaHint: "記念写真万博"
   },
   {
@@ -110,7 +110,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "minus",
     mediaType: "image",
     action: { type: "backward", value: 2 },
-    imageUrl: "public/memories/08-horse-no-entry.png",
+    imageUrl: "/memories/08-horse-no-entry.png",
     mediaHint: "ドラ息子"
   },
   {
@@ -120,7 +120,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "normal",
     mediaType: "image",
     action: undefined,
-    imageUrl: "public/memories/09-eraser-choco-egg.png",
+    imageUrl: "/memories/09-eraser-choco-egg.png",
     mediaHint: "お風呂とベッドの上"
   },
   {
@@ -130,7 +130,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "normal",
     mediaType: "video",
     action: undefined,
-    videoUrl: "public/memories/10-chamber-practice.mp4",
+    videoUrl: "/memories/10-chamber-practice.mp4",
     mediaHint: "チェンバー"
   },
   {
@@ -140,7 +140,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "plus",
     mediaType: "image",
     action: { type: "forward", value: 3 },
-    imageUrl: "public/memories/11-harima-steep-slope.png",
+    imageUrl: "/memories/11-harima-steep-slope.png",
     mediaHint: "坂の画像。Googleマップ"
   },
   {
@@ -150,7 +150,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "normal",
     mediaType: "image",
     action: undefined,
-    imageUrl: "public/memories/12-robotics-lab-overtime.png",
+    imageUrl: "/memories/12-robotics-lab-overtime.png",
     mediaHint: "ロボ研の画像"
   },
   {
@@ -160,7 +160,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "normal",
     mediaType: "image",
     action: undefined,
-    imageUrl: "public/memories/13-taj-mahal-everest-kulfi.png",
+    imageUrl: "/memories/13-taj-mahal-everest-kulfi.png",
     mediaHint: "クルフィの画像"
   },
   {
@@ -170,7 +170,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "warp",
     mediaType: "image",
     action: { type: "warp", target: 20 },
-    imageUrl: "public/memories/14-dell-apex-low-quality.png",
+    imageUrl: "/memories/14-dell-apex-low-quality.png",
     mediaHint: "APEX画質悪い感じ"
   },
   {
@@ -180,7 +180,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "normal",
     mediaType: "image",
     action: undefined,
-    imageUrl: "public/memories/15-math-lecture.png",
+    imageUrl: "/memories/15-math-lecture.png",
     mediaHint: "いかそん"
   },
   {
@@ -190,7 +190,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "normal",
     mediaType: "image",
     action: undefined,
-    imageUrl: "public/memories/16-sayacchi-bogosota.png",
+    imageUrl: "/memories/16-sayacchi-bogosota.png",
     mediaHint: "さやっち"
   },
   {
@@ -200,7 +200,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "minus",
     mediaType: "image",
     action: { type: "backward", value: 3 },
-    imageUrl: "public/memories/17-azuma-closeup.png",
+    imageUrl: "/memories/17-azuma-closeup.png",
     mediaHint: "東さんドアップ"
   },
   {
@@ -210,7 +210,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "normal",
     mediaType: "image",
     action: undefined,
-    imageUrl: "public/memories/18-tamadahana.png",
+    imageUrl: "/memories/18-tamadahana.png",
     mediaHint: "卒業アルバム案（使用は要確認）"
   },
   {
@@ -220,7 +220,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "normal",
     mediaType: "image",
     action: undefined,
-    imageUrl: "public/memories/19-festival-low-chair.png",
+    imageUrl: "/memories/19-festival-low-chair.png",
     mediaHint: "どいくんの低い椅子の画像"
   },
   {
@@ -230,7 +230,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "swap",
     mediaType: "video",
     action: { type: "swap" },
-    videoUrl: "public/memories/20-tama-yobi-iku-loop.mp4",
+    videoUrl: "/memories/20-tama-yobi-iku-loop.mp4",
     mediaHint: "たまよびいく再生"
   },
   {
@@ -240,7 +240,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "normal",
     mediaType: "image",
     action: undefined,
-    imageUrl: "public/memories/21-library-sad-gentleman.png",
+    imageUrl: "/memories/21-library-sad-gentleman.png",
     mediaHint: "図書館の前のあいつの顔"
   },
   {
@@ -250,7 +250,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "normal",
     mediaType: "image",
     action: undefined,
-    imageUrl: "public/memories/22-awaji-double-meal.png",
+    imageUrl: "/memories/22-awaji-double-meal.png",
     mediaHint: "淡路島定食や"
   },
   {
@@ -260,7 +260,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "normal",
     mediaType: "image",
     action: undefined,
-    imageUrl: "public/memories/23-undershirt-class.png",
+    imageUrl: "/memories/23-undershirt-class.png",
     mediaHint: "カツの情報質の肌着の画像"
   },
   {
@@ -270,7 +270,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "plus",
     mediaType: "image",
     action: { type: "forward", value: 2 },
-    imageUrl: "public/memories/24-kamagake-udon.png",
+    imageUrl: "/memories/24-kamagake-udon.png",
     mediaHint: "丸亀製麺釜揚げの画像"
   },
   {
@@ -280,7 +280,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "normal",
     mediaType: "image",
     action: undefined,
-    imageUrl: "public/memories/25-helmet-kohei.png",
+    imageUrl: "/memories/25-helmet-kohei.png",
     mediaHint: "航平の写真"
   },
   {
@@ -290,7 +290,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "normal",
     mediaType: "image",
     action: undefined,
-    imageUrl: "public/memories/26-cardigan-guardian.png",
+    imageUrl: "/memories/26-cardigan-guardian.png",
     mediaHint: "あの写真"
   },
   {
@@ -300,7 +300,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "normal",
     mediaType: "image",
     action: undefined,
-    imageUrl: "public/memories/27-shibito-monochrome.png",
+    imageUrl: "/memories/27-shibito-monochrome.png",
     mediaHint: "モノクロ記念写真"
   },
   {
@@ -310,7 +310,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "minus",
     mediaType: "image",
     action: { type: "backward", value: 2 },
-    imageUrl: "public/memories/28-missile-interceptor-project.png",
+    imageUrl: "/memories/28-missile-interceptor-project.png",
     mediaHint: "あの先生の写真"
   },
   {
@@ -320,7 +320,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "normal",
     mediaType: "image",
     action: undefined,
-    imageUrl: "public/memories/29-hanpen-surprise.png",
+    imageUrl: "/memories/29-hanpen-surprise.png",
     mediaHint: "北海道グッドマークカツ"
   },
   {
@@ -330,7 +330,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "normal",
     mediaType: "image",
     action: undefined,
-    imageUrl: "public/memories/30-pinocchio-usj.png",
+    imageUrl: "/memories/30-pinocchio-usj.png",
     mediaHint: "ピノキオ USJ"
   },
   {
@@ -340,7 +340,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "normal",
     mediaType: "image",
     action: undefined,
-    imageUrl: "public/memories/31-upopoy-bookmark.png",
+    imageUrl: "/memories/31-upopoy-bookmark.png",
     mediaHint: "うぽぽいの栞"
   },
   {
@@ -350,7 +350,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "warp",
     mediaType: "image",
     action: { type: "warp", target: 28 },
-    imageUrl: "public/memories/32-love-and-illusion.png",
+    imageUrl: "/memories/32-love-and-illusion.png",
     mediaHint: "好きな人の写真"
   },
   {
@@ -360,7 +360,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "normal",
     mediaType: "image",
     action: undefined,
-    imageUrl: "public/memories/33-humanities-professor-rumor-reference.png",
+    imageUrl: "/memories/33-humanities-professor-rumor-reference.png",
     mediaHint: "荒川の写真（使用可否を要確認）"
   },
   {
@@ -370,7 +370,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "normal",
     mediaType: "video",
     action: undefined,
-    videoUrl: "public/memories/34-social-credit-valorant.mp4",
+    videoUrl: "/memories/34-social-credit-valorant.mp4",
     mediaHint: "valorant動画"
   },
   {
@@ -380,7 +380,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "normal",
     mediaType: "image",
     action: undefined,
-    imageUrl: "public/memories/35-starter-gear-school.png",
+    imageUrl: "/memories/35-starter-gear-school.png",
     mediaHint: "黒川さん"
   },
   {
@@ -390,7 +390,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "plus",
     mediaType: "video",
     action: { type: "forward", value: 3 },
-    videoUrl: "public/memories/36-realm-royale-chest.mp4",
+    videoUrl: "/memories/36-realm-royale-chest.mp4",
     mediaHint: "realm royal"
   },
   {
@@ -400,7 +400,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "normal",
     mediaType: "image",
     action: undefined,
-    imageUrl: "public/memories/37-classroom-surreal-joke.png",
+    imageUrl: "/memories/37-classroom-surreal-joke.png",
     mediaHint: "大坪さん"
   },
   {
@@ -410,7 +410,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "normal",
     mediaType: "image",
     action: undefined,
-    imageUrl: "public/memories/38-one-leg-hair.png",
+    imageUrl: "/memories/38-one-leg-hair.png",
     mediaHint: "みなみかわ"
   },
   {
@@ -420,7 +420,7 @@ const rawCells: Omit<MemoryCell, "cellImageUrl">[] = [
     cellType: "normal",
     mediaType: "image",
     action: undefined,
-    imageUrl: "public/memories/39-nadal-university-pitch.png",
+    imageUrl: "/memories/39-nadal-university-pitch.png",
     mediaHint: "金子はると井上"
   },
   {
