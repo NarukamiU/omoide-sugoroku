@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import "./App.css";
 import { cells } from "./gameData";
@@ -204,15 +203,7 @@ function App() {
           cells.length - 1,
         );
 
-        const landingCell = cells[landingPosition];
 
-        const finalPosition = Math.max(
-          0,
-          Math.min(
-            landingPosition + (landingCell.event ?? 0),
-            cells.length - 1,
-          ),
-        );
 
         const positions = [...current.positions];
         positions[player] = landingPosition;
@@ -222,7 +213,7 @@ function App() {
           positions,
           dice: result,
           memoryId: landingPosition,
-          pendingPosition: finalPosition,
+          pendingPosition: landingPosition,
           message: `プレイヤー${player + 1}は${result}を出して、${landingPosition + 1}番のマスに止まった！`,
         };
       });
@@ -235,63 +226,93 @@ function App() {
     }
   }
 
-  async function closeMemory() {
-    if (!roomCode || !roomState || busy) return;
+ 
+async function closeMemory() {
+  if (!roomCode || !roomState || busy) return;
 
-    setBusy(true);
+  setBusy(true);
+  setError("");
 
-    try {
-      const gameRef = ref(database, `rooms/${roomCode}`);
+  try {
+    const gameRef = ref(database, `rooms/${roomCode}`);
 
-      await runTransaction(gameRef, (current) => {        
-        if (
-          !current ||
-          current.memoryId == null ||
-          current.pendingPosition == null ||
-          current.winner != null ||
-          current.turn !== myPlayer
-        ) {
-          return;
-        }
+    await runTransaction(gameRef, (current) => {
+      if (
+        !current ||
+        current.memoryId == null ||
+        current.pendingPosition == null ||
+        current.winner != null ||
+        current.turn !== myPlayer
+      ) {
+        return;
+      }
 
+      const player = current.turn;
+      const opponent = (player + 1) % 2;
+      const landingPosition = current.pendingPosition;
+      const landingCell = cells[current.memoryId];
+      const action = landingCell.action;
+      const positions = [...current.positions];
 
-        const player = current.turn;
-        const finalPosition = current.pendingPosition;
-        const landingCell = cells[current.memoryId];
-        const positions = [...current.positions];
+      let finalPosition = landingPosition;
+      let message = `プレイヤー${player + 1}は${landingPosition + 1}番のマスに止まった！`;
 
+      if (action?.type === "forward") {
+        finalPosition = Math.min(
+          landingPosition + action.value,
+          cells.length - 1,
+        );
+        message = `前進！ プレイヤー${player + 1}は${action.value}マス進んだ！`;
+      } else if (action?.type === "backward") {
+        finalPosition = Math.max(
+          landingPosition - action.value,
+          0,
+        );
+        message = `後退！ プレイヤー${player + 1}は${action.value}マス戻った！`;
+      } else if (action?.type === "warp") {
+        finalPosition = Math.max(
+          0,
+          Math.min(action.target, cells.length - 1),
+        );
+        message = `ワープ！ プレイヤー${player + 1}は${finalPosition + 1}番のマスへ移動！`;
+      } else if (action?.type === "swap") {
+        positions[player] = current.positions[opponent];
+        positions[opponent] = landingPosition;
+
+        message = `位置交換！ プレイヤー${player + 1}とプレイヤー${opponent + 1}の位置が入れ替わった！`;
+      }
+
+      if (action?.type !== "swap") {
         positions[player] = finalPosition;
+      }
 
-        const winner =
-          finalPosition >= cells.length - 1 ? player : null;
-
-        let message =
-          landingCell.event !== undefined && landingCell.event !== 0
-            ? `イベント発動！ プレイヤー${player + 1}は${finalPosition + 1}番のマスへ移動！`
-            : `プレイヤー${player + 1}は${finalPosition + 1}番のマスへ移動！`;
-
-        if (winner !== null) {
-          message = `プレイヤー${winner + 1}がゴール！`;
-        }
-
-        return {
-          ...current,
-          positions,
-          memoryId: null,
-          pendingPosition: null,
-          turn: (player + 1) % 2,
-          winner,
-          message,
-        };
-      });
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "更新に失敗したで。",
+      const winner = positions.findIndex(
+        (position) => position >= cells.length - 1,
       );
-    } finally {
-      setBusy(false);
-    }
+
+      if (winner !== -1) {
+        message = `プレイヤー${winner + 1}がゴール！`;
+      }
+
+      return {
+        ...current,
+        positions,
+        memoryId: null,
+        pendingPosition: null,
+        turn: (player + 1) % 2,
+        winner: winner === -1 ? null : winner,
+        message,
+      };
+    });
+  } catch (err) {
+    setError(
+      err instanceof Error ? err.message : "更新に失敗したで。",
+    );
+  } finally {
+    setBusy(false);
   }
+}
+
 
   
   async function restartGame() {
@@ -418,11 +439,15 @@ function App() {
           <div
             key={cell.id}
             className={`cell ${
-              cell.event
-                ? cell.event > 0
-                  ? "bonus"
-                  : "penalty"
-                : ""
+              cell.action?.type === "forward"
+                ? "bonus"
+                : cell.action?.type === "backward"
+                  ? "penalty"
+                  : cell.action?.type === "warp"
+                    ? "warp"
+                    : cell.action?.type === "swap"
+                      ? "swap"
+                      : ""
             }`}
           >
             <span className="cell-number">{cell.id + 1}</span>
@@ -432,10 +457,15 @@ function App() {
               <span className="special">GOAL</span>
             )}
 
-            {cell.event !== undefined && (
+            {cell.action && (
               <span className="event">
-                {cell.event > 0 ? "+" : ""}
-                {cell.event}
+                {cell.action.type === "forward"
+                  ? `+${cell.action.value}`
+                  : cell.action.type === "backward"
+                    ? `-${cell.action.value}`
+                    : cell.action.type === "warp"
+                      ? "WARP"
+                      : "SWAP"}
               </span>
             )}
 
@@ -519,10 +549,15 @@ function App() {
               />
             )}
 
-            {memory.event !== undefined && memory.event !== 0 && (
+            {memory.action && (
               <p className="memory-event">
-                {memory.event > 0 ? "+" : ""}
-                {memory.event}マス移動！
+                {memory.action.type === "forward"
+                  ? `${memory.action.value}マス前進！`
+                  : memory.action.type === "backward"
+                    ? `${memory.action.value}マス後退！`
+                    : memory.action.type === "warp"
+                      ? `${memory.action.target + 1}番のマスへワープ！`
+                      : "相手と位置を交換！"}
               </p>
             )}
 
