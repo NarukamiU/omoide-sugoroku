@@ -2,7 +2,11 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import { cells } from "./gameData";
-import { database } from "./firebase";
+import { database, auth } from "./firebase";
+import {
+  onAuthStateChanged,
+  signInAnonymously,
+} from "firebase/auth";
 import {
   onValue,
   ref,
@@ -32,25 +36,34 @@ const initialGame: GameState = {
 };
 
 function App() {
-  const [clientId] = useState(() => {
-    const key = "omoide-sugoroku-client-id";
-    const saved = localStorage.getItem(key);
-
-    if (saved) return saved;
-
-    const id = crypto.randomUUID();
-    localStorage.setItem(key, id);
-    return id;
-  });
+  const [clientId, setClientId] = useState("");
 
   const [roomInput, setRoomInput] = useState("");
   const [roomCode, setRoomCode] = useState("");
   const [roomState, setRoomState] = useState<GameState | null>(null);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  useEffect(() => {
+  const unsubscribe = onAuthStateChanged(auth, (user) => {
+    if (user) {
+      setClientId(user.uid);
+      return;
+    }
+
+    signInAnonymously(auth).catch((err) => {
+      setError(
+        `匿名認証エラー：${
+          err instanceof Error ? err.message : "ログインに失敗したで。"
+        }`,
+      );
+    });
+  });
+
+  return unsubscribe;
+}, []);
 
   useEffect(() => {
-    if (!roomCode) return;
+    if (!roomCode || !clientId) return;
 
     const gameRef = ref(database, `rooms/${roomCode}`);
 
@@ -65,7 +78,7 @@ function App() {
     );
 
     return unsubscribe;
-  }, [roomCode]);
+  }, [roomCode, clientId]);
 
   const myPlayer = roomState
     ? roomState.playerIds.indexOf(clientId)
@@ -77,6 +90,10 @@ function App() {
       : cells[roomState.memoryId];
 
   async function joinRoom() {
+    if (!clientId) {
+     setError("認証中やで。少し待ってから試してな。");
+     return;
+    }
     const code = roomInput.trim().toUpperCase();
 
     if (!/^[A-Z0-9]{4,12}$/.test(code)) {
@@ -124,10 +141,15 @@ function App() {
 
       const joinedState = result.snapshot.val() as GameState | null;
 
+      const joinedPlayers = [
+        joinedState?.playerIds?.[0] ?? null,
+        joinedState?.playerIds?.[1] ?? null,
+      ];
+
       if (
         !result.committed ||
         !joinedState ||
-        !joinedState.playerIds.includes(clientId)
+        !joinedPlayers.includes(clientId)
       ) {
         setError("このルームは満員や。別のルームIDを使ってな。");
         return;
@@ -284,20 +306,23 @@ function App() {
       const gameRef = ref(database, `rooms/${roomCode}`);
 
       await runTransaction(gameRef, (current) => {
-        if (
-          !current ||
-          current.winner == null ||
-          !current.playerIds?.includes(clientId)
-        ) {
+        if (!current || current.winner == null) {
+          return;
+        }
+
+        const rawPlayers = current.playerIds ?? {};
+        const players = [
+          rawPlayers[0] ?? null,
+          rawPlayers[1] ?? null,
+        ];
+
+        if (!players.includes(clientId)) {
           return;
         }
 
         return {
           ...initialGame,
-          playerIds: [
-            current.playerIds[0] ?? null,
-            current.playerIds[1] ?? null,
-          ],
+          playerIds: players,
           message: "プレイヤー1からスタート！",
         };
       });
